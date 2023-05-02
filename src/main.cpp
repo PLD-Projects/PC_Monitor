@@ -42,21 +42,23 @@ private:
   int usage;
   int angle = 30;
   uint8_t thickness;
+  uint32_t color;
   const char *text;
 
 public:
-  ringMeter(int x, int y, int r, const char *text);
+  ringMeter(int x, int y, int r, uint32_t color, const char *text);
   void init();
   void update(int temp, int usage);
 };
 
-ringMeter::ringMeter(int x, int y, int r, const char *text)
+ringMeter::ringMeter(int x, int y, int r, uint32_t color, const char *text)
 {
   this->x = x;
   this->y = y;
   this->r = r;
   this->temp = 0;
   this->usage = 0;
+  this->color = color;
   this->text = text;
 }
 
@@ -91,7 +93,7 @@ void ringMeter::update(int temp, int usage)
 
       int _angle = map(this->temp, 0, 100, 30, 330);
       if (_angle > this->angle)
-        tft.drawArc(x, y, r, r - thickness, this->angle, _angle, TFT_SKYBLUE, TFT_BLACK);
+        tft.drawArc(x, y, r, r - thickness, this->angle, _angle, color, TFT_BLACK);
       else
         tft.drawArc(x, y, r, r - thickness, this->angle, _angle, TFT_BLACK, DARKER_GREY);
       this->angle = _angle;
@@ -138,6 +140,37 @@ void ringMeter::update(int temp, int usage)
   }
 }
 
+void updateFreq(int cpuf,int gpuf)
+{
+  spr.createSprite(200,40);
+  spr.fillSprite(TFT_NAVY);
+  ofr.loadFont(TTF_FONT, sizeof(TTF_FONT));
+  ofr.setDrawer(spr);
+  ofr.setFontSize(40);
+  ofr.setFontColor(TFT_WHITE, DARKER_GREY);
+  char buffer[4];
+  
+  ofr.setCursor(5, 0);
+  ofr.printf("C:");
+  sprintf(buffer, "%d", cpuf);
+  ofr.setCursor(25, 0);
+  ofr.printf(buffer);
+  ofr.setCursor(105, 0);
+  ofr.printf("G:");
+  sprintf(buffer, "%d", gpuf);
+  ofr.setCursor(125, 0);
+  ofr.printf(buffer);
+  ofr.setFontSize(25);
+  ofr.setCursor(75, 22);
+  ofr.rprintf("MHz");
+  ofr.setCursor(160, 22);
+  ofr.rprintf("MHz");
+
+  spr.pushSprite(0, 200); // Push sprite containing the val number
+  spr.deleteSprite();                   // Recover used memory
+  ofr.unloadFont();
+
+}
 uint32_t runTime = 0; // time for next update
 
 int reading = 0; // Value to be displayed
@@ -147,9 +180,9 @@ int8_t ramp = 1;
 
 bool initMeter = true;
 
-ringMeter cpuMeter = ringMeter(100, 100, 90, "CPU");
-ringMeter gpuMeter = ringMeter(260, 60, 55, "GPU");
-ringMeter ramMeter = ringMeter(260, 180, 55, "RAM");
+ringMeter cpuMeter = ringMeter(100, 100, 90, TFT_MAGENTA, "CPU");
+ringMeter gpuMeter = ringMeter(260, 60, 55, TFT_GREEN, "GPU");
+ringMeter ramMeter = ringMeter(260, 180, 55, TFT_YELLOW, "RAM");
 
 void setup(void)
 {
@@ -165,16 +198,19 @@ void setup(void)
   gpuMeter.init();
   ramMeter.init();
 
-  ofr.setDrawer(tft);
-  ofr.setFontColor(TFT_GOLD, DARKER_GREY);
-  ofr.setFontSize(30);
-  ofr.setCursor(10, 205);
-  ofr.printf("C:     MHz");
+  // ofr.setDrawer(tft);
+  // ofr.setFontColor(TFT_GOLD, DARKER_GREY);
+  // ofr.setFontSize(30);
+  // ofr.setCursor(10, 205);
+  // ofr.printf("C:     MHz");
+  updateFreq(9999,999);
 }
 
 void loop()
 {
   cpuMeter.update(30, 30);
+  gpuMeter.update(30, 30);
+  ramMeter.update(30, 30);
 }
 //   static uint16_t maxRadius = 0;
 //   int8_t ramp = 1;
