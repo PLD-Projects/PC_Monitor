@@ -35,14 +35,15 @@ OpenFontRender ofr;
 class ringMeter
 {
 private:
-  int x; 
+  int x;
   int y;
-  int r; 
+  int r;
   int temp;
   int usage;
-  int angle;
+  int angle = 30;
   uint8_t thickness;
   const char *text;
+
 public:
   ringMeter(int x, int y, int r, const char *text);
   void init();
@@ -61,55 +62,61 @@ ringMeter::ringMeter(int x, int y, int r, const char *text)
 
 void ringMeter::init()
 {
-    tft.fillCircle(x, y, r, DARKER_GREY);
-    tft.drawSmoothCircle(x, y, r, TFT_SILVER, DARKER_GREY);
-    uint16_t tmp = this->r - 3;
-    tft.drawArc(this->x, this->y, tmp, tmp - tmp / 5, 30, 330, TFT_BLACK, DARKER_GREY);
-    this->thickness = r / 5;
-    ofr.setDrawer(tft);
-    ofr.setFontColor(TFT_GOLD, DARKER_GREY);
-    ofr.setFontSize(r / 2.0);
-    ofr.setCursor(this->x, this->y + (r * 0.4));
-    ofr.cprintf(this->text);
+  tft.fillCircle(x, y, r, DARKER_GREY);
+  tft.drawSmoothCircle(x, y, r, TFT_SILVER, DARKER_GREY);
+  uint16_t tmp = this->r - 3;
+  tft.drawArc(this->x, this->y, tmp, tmp - tmp / 5, 30, 330, TFT_BLACK, DARKER_GREY);
+  this->thickness = r / 5;
+  ofr.setDrawer(tft);
+  ofr.setFontColor(TFT_GOLD, DARKER_GREY);
+  ofr.setFontSize(r / 2.0);
+  ofr.setCursor(this->x, this->y + (r * 0.4));
+  ofr.cprintf(this->text);
 }
 
 void ringMeter::update(int temp, int usage)
 {
-  while(1)
+  while (1)
   {
-    delay(100);
-    if(temp == this->temp && usage == this->usage) break;
+    // delay(100);
+    if (temp == this->temp && usage == this->usage)
+      break;
 
-    if(temp != this->temp)
+    if (temp != this->temp)
     {
-      if(temp > this->temp)this->temp++;
-      else if(temp < this->temp)this->temp--;
+      if (temp > this->temp)
+        this->temp++;
+      else if (temp < this->temp)
+        this->temp--;
 
-      int _angle = map(this->temp , 0, 100, 30, 330);
-      if (_angle > this->angle)tft.drawArc(x, y, r, r - thickness, this->angle, _angle, TFT_SKYBLUE, TFT_BLACK);
-      else tft.drawArc(x, y, r, r - thickness, this->angle, _angle, TFT_BLACK, DARKER_GREY);
+      int _angle = map(this->temp, 0, 100, 30, 330);
+      if (_angle > this->angle)
+        tft.drawArc(x, y, r, r - thickness, this->angle, _angle, TFT_SKYBLUE, TFT_BLACK);
+      else
+        tft.drawArc(x, y, r, r - thickness, this->angle, _angle, TFT_BLACK, DARKER_GREY);
       this->angle = _angle;
     }
-    
-    if(usage != this->usage)
+
+    if (usage != this->usage)
     {
-      if(usage > this->usage)this->usage++;
-      else if(usage < this->usage)this->usage--;
+      if (usage > this->usage)
+        this->usage++;
+      else if (usage < this->usage)
+        this->usage--;
 
       ofr.loadFont(TTF_FONT, sizeof(TTF_FONT));
       ofr.setDrawer(spr);
       ofr.setFontSize((6 * r) / 4);
       ofr.setFontColor(TFT_WHITE, DARKER_GREY);
 
-
       uint8_t w = ofr.getTextWidth("444");
       uint8_t h = ofr.getTextHeight("4") + 4;
       spr.createSprite(w, h + 2);
-      spr.fillSprite(DARKER_GREY); // (TFT_BLUE); // (DARKER_GREY);
-      char str_buf[8];             // Buffed for string
-      itoa(this->usage, str_buf, 10);      // Convert value to string (null terminated)
-      uint8_t ptr = 0;             // Pointer to a digit character
-      uint8_t dx = 4;              // x offfset for cursor position
+      spr.fillSprite(DARKER_GREY);    // (TFT_BLUE); // (DARKER_GREY);
+      char str_buf[8];                // Buffed for string
+      itoa(this->usage, str_buf, 10); // Convert value to string (null terminated)
+      uint8_t ptr = 0;                // Pointer to a digit character
+      uint8_t dx = 4;                 // x offfset for cursor position
       if (this->usage < 100)
         dx = ofr.getTextWidth("4") / 2; // Adjust cursor x for 2 digits
       if (this->usage < 10)
@@ -129,11 +136,7 @@ void ringMeter::update(int temp, int usage)
       ofr.unloadFont();
     }
   }
-  
 }
-
-
-
 
 uint32_t runTime = 0; // time for next update
 
@@ -144,9 +147,9 @@ int8_t ramp = 1;
 
 bool initMeter = true;
 
-ringMeter cpuMeter = ringMeter(100, 100, 95, "CPU");
-ringMeter gpuMeter = ringMeter(260, 60, 57, "GPU");
-ringMeter ramMeter = ringMeter(260, 180, 57, "RAM");
+ringMeter cpuMeter = ringMeter(100, 100, 90, "CPU");
+ringMeter gpuMeter = ringMeter(260, 60, 55, "GPU");
+ringMeter ramMeter = ringMeter(260, 180, 55, "RAM");
 
 void setup(void)
 {
@@ -161,12 +164,17 @@ void setup(void)
   cpuMeter.init();
   gpuMeter.init();
   ramMeter.init();
-  // tft.setViewport(0, 0, 240, 320);
+
+  ofr.setDrawer(tft);
+  ofr.setFontColor(TFT_GOLD, DARKER_GREY);
+  ofr.setFontSize(30);
+  ofr.setCursor(10, 205);
+  ofr.printf("C:     MHz");
 }
 
 void loop()
 {
-  cpuMeter.update(30,30);
+  cpuMeter.update(30, 30);
 }
 //   static uint16_t maxRadius = 0;
 //   int8_t ramp = 1;
@@ -226,7 +234,6 @@ void loop()
 // #ifdef DRAW_DIGITS
 //   ofr.unloadFont(); // Recover space used by font metrics etc
 // #endif
-
 
 // #########################################################################
 //  Draw the meter on the screen, returns x coord of righthand side
