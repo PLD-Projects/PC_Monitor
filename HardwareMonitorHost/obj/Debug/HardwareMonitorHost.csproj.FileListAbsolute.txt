@@ -1,0 +1,15 @@
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\bin\Debug\HardwareMonitorHost.exe.config
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\bin\Debug\HardwareMonitorHost.exe
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\bin\Debug\HardwareMonitorHost.pdb
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\obj\Debug\HardwareMonitorHost.csproj.AssemblyReference.cache
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\obj\Debug\HardwareMonitorHost.csproj.SuggestedBindingRedirects.cache
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\obj\Debug\HardwareMonitorHost.Form1.resources
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\obj\Debug\HardwareMonitorHost.Properties.Resources.resources
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\obj\Debug\HardwareMonitorHost.csproj.GenerateResource.cache
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\obj\Debug\HardwareMonitorHost.csproj.CoreCompileInputs.cache
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\obj\Debug\HardwareMonitorHost.exe
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\obj\Debug\HardwareMonitorHost.pdb
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\bin\Debug\Newtonsoft.Json.dll
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\bin\Debug\OpenHardwareMonitorLib.dll
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\bin\Debug\Newtonsoft.Json.xml
+D:\PLDRobot\Github\PC_Monitor\HardwareMonitorHost\obj\Debug\HardwareMonitorHost.csproj.CopyComplete
